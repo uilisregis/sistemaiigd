@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.sqlite"
+}
+
+model Member {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  birthDate   DateTime? @map("birth_date")
+  photoPath   String?  @map("photo_path")
+  filesPath   String?  @map("files_path")
+  isActive    Boolean  @default(true) @map("is_active")
+  deletedAt   DateTime? @map("deleted_at")
+  deleteReason String? @map("delete_reason")
+  groupName   String?  @map("group_name")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("members")
+}
+
+model Group {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  color       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("groups")
+}
+
+model Attendance {
+  id            Int      @id @default(autoincrement())
+  memberId      Int      @map("member_id")
+  serviceTypeId Int      @map("service_type_id")
+  date          DateTime
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("attendance")
+}
+
+model ServiceType {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("service_types")
+}
