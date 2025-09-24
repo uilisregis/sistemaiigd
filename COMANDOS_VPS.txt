@@ -1,0 +1,43 @@
+# 🚀 COMANDOS PARA EXECUTAR NA VPS
+# Copie e cole estes comandos um por vez na VPS
+
+# 1. Atualizar sistema
+sudo apt update && sudo apt upgrade -y
+
+# 2. Instalar Node.js
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# 3. Instalar PM2
+sudo npm install -g pm2
+
+# 4. Clonar repositório
+git clone https://github.com/uilisregis/sistemaiigd.git
+cd sistemaiigd
+
+# 5. Instalar dependências do backend
+cd backend && npm install && cd ..
+
+# 6. Instalar dependências do frontend
+cd frontend && npm install && cd ..
+
+# 7. Executar deploy
+chmod +x deploy.sh
+./deploy.sh
+
+# 8. Configurar firewall
+sudo ufw allow 2027
+sudo ufw allow 2028
+sudo ufw allow 3033
+sudo ufw --force enable
+
+# 9. Verificar status
+pm2 status
+
+# 10. Ver logs se necessário
+pm2 logs
+
+# URLs finais:
+# Frontend: http://164.68.112.91:2027
+# Backend: http://164.68.112.91:2028
+# Prisma: http://164.68.112.91:3033
