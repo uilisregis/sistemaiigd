@@ -18,10 +18,10 @@ require('./config/database');
 const app = express();
 const PORT = process.env.PORT || 2028;
 
-// Configurar rate limiting
+// Configurar rate limiting (mais permissivo para desenvolvimento)
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 100, // máximo 100 requests por IP por janela
+    max: 1000, // máximo 1000 requests por IP por janela (aumentado)
     message: {
         success: false,
         message: 'Muitas requisições deste IP, tente novamente em 15 minutos'
@@ -31,7 +31,11 @@ const limiter = rateLimit({
 // Middlewares de segurança
 app.use(helmet());
 app.use(compression());
-app.use(limiter);
+
+// Rate limiting apenas em produção
+if (process.env.NODE_ENV === 'production') {
+    app.use(limiter);
+}
 
 // Middlewares de parsing
 app.use(express.json({ limit: '10mb' }));
